@@ -12,7 +12,7 @@ __author__ = 'Adam Miskiewicz <adam@bolsterlabs.com>'
 __version__ = '0.1.0'
 
 packages = [
-    'pipelines',
+    'celery_pipelines',
 ]
 
 if sys.argv[-1] == 'publish':
@@ -35,11 +35,10 @@ setup(
     include_package_data=True,
     packages=packages,
     classifiers=[
-        'Development Status :: 5 - Alpha',
+        'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
         'Topic :: Software Development :: Libraries :: Python Modules',
-        'Topic :: Communications :: Chat',
         'Topic :: Internet'
     ]
 )

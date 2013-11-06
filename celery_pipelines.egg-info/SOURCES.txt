@@ -1,0 +1,12 @@
+HISTORY.rst
+LICENSE
+MANIFEST.in
+README.rst
+setup.py
+celery_pipelines/__init__.py
+celery_pipelines/models.py
+celery_pipelines.egg-info/PKG-INFO
+celery_pipelines.egg-info/SOURCES.txt
+celery_pipelines.egg-info/dependency_links.txt
+celery_pipelines.egg-info/requires.txt
+celery_pipelines.egg-info/top_level.txt

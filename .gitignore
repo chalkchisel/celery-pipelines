@@ -1,0 +1,31 @@
+*~
+*.py[cod]
+*.DS_Store
+*.orig
+*.po
+*.mo
+*.rdb
+*.db
+*.psd
+*.project
+*.lock
+
+# Application
+node_modules/
+temp/
+# dist/
+app/bower_components
+libpeerconnection.log
+app/index.html
+app/css/main.css
+app/css/mobile.css
+app/css/twitter.css
+app/css/tumblr.css
+
+.bundle/
+.env*
+.grunt/
+
+# Installer logs
+pip-log.txt
+

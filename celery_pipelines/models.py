@@ -82,7 +82,13 @@ class PipelineBase(Task.__metaclass__):
     def __new__(cls, name, bases, attrs):
         new = super(PipelineBase, cls).__new__
         pipeline_klass = new(cls, name, bases, attrs)
-        identifier = pipeline_klass.identifier or pipeline_klass.name
+
+        mod = pipeline_klass.__module__
+        if mod == "celery_pipelines.models":
+            return pipeline_klass
+
+        app_name, sep, after = mod.partition('.pipelines')
+        identifier = app_name + "." + pipeline_klass.__name__
         if identifier and identifier not in PIPELINES._pipeline_registry:
             return PIPELINES._register_pipeline(identifier, pipeline_klass)
         return pipeline_klass
