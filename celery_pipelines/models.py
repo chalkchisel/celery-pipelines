@@ -1,4 +1,5 @@
 from celery import Task, group, chain, chord
+from celery.app.task import TaskType
 from celery import current_app
 from celery.contrib.methods import task_method
 
@@ -74,7 +75,7 @@ class PipelineTask(Task):
     pipeline = None
 
 
-class PipelineBase(Task.__metaclass__):
+class PipelineBase(TaskType):
 
     """
     Pipeline metaclass to allow for registration with the PipelineBroker on class creation

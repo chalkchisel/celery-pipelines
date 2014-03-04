@@ -4,9 +4,9 @@ import os
 import sys
 
 try:
-    from setuptools import setup
+    from setuptools import setup, find_packages
 except ImportError:
-    from distutils.core import setup
+    from distutils.core import setup, find_packages
 
 __author__ = 'Adam Miskiewicz <adam@bolsterlabs.com>'
 __version__ = '0.1.0'
@@ -33,7 +33,7 @@ setup(
     description='Pipelines for Celery',
     long_description=open('README.rst').read() + '\n\n' + open('HISTORY.rst').read(),
     include_package_data=True,
-    packages=packages,
+    packages=find_packages(exclude=['tests', 'tests.*']),
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
