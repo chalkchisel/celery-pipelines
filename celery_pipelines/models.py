@@ -206,7 +206,7 @@ def register_task(method):  # AKA: bolster.pipelines.task
     PipelineBroker.
     """
     def decorator(*args, **kwargs):
-        _self = kwargs.pop('__self__', args[0])  # handle self
+        _self = kwargs.pop('__self__', args[0] if len(args) > 0 else None)  # handle self
         if _self in args:
             arg_list = list(args)
             arg_list.remove(_self)

@@ -10,3 +10,7 @@ celery_pipelines.egg-info/SOURCES.txt
 celery_pipelines.egg-info/dependency_links.txt
 celery_pipelines.egg-info/requires.txt
 celery_pipelines.egg-info/top_level.txt
+celery_pipelines/tests/__init__.py
+celery_pipelines/tests/pipelines.py
+celery_pipelines/utils/__init__.py
+celery_pipelines/utils/testing.py
