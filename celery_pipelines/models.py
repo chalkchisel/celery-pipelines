@@ -46,11 +46,16 @@ class PipelineBroker:
         pipeline_tasks = []
 
         for name, method in pipeline.__dict__.iteritems():
-            if hasattr(method, "order"):
+            is_callback = hasattr(method, "task_type") and method.task_type == "callback"
+            if hasattr(method, "order") or is_callback:
                 task = current_app.task(
                     method, filter=task_method, name="%s.%s" % (pipeline.name, name))
                 setattr(pipeline, name, task)
-                pipeline_tasks.append((method.order, name))
+
+                if is_callback:
+                    pipeline.callback = task
+                else:
+                    pipeline_tasks.append((method.order, name))
 
         sorted_pipeline_tasks = [p[1]
                                  for p in sorted(pipeline_tasks, key=lambda p: p[0])]
@@ -126,6 +131,9 @@ class BasePipeline(PipelineTask):
             t = t.s(*args, **kwargs)
             subtasks.append(t)
 
+        if self.signature == chord:
+            return self.signature(subtasks)
+
         return self.signature(*subtasks)
 
     def run(self, *args, **kwargs):
@@ -175,23 +183,18 @@ class ChordPipeline(BasePipeline):
     abstract = True
     signature = chord
 
-    def callback(self, *args, **kwargs):
-        raise NotImplementedError('Callback must be implemented for a ChordPipeline.')
-
     def run(self, *args, **kwargs):
         """
         Run the pipeline
         """
+        if not hasattr(self, 'callback') or not self.callback:
+            raise NotImplementedError('Callback must be implemented for a ChordPipeline.')
+
         signature = self.build_signature(*args, **kwargs)
 
-        # build the callback task
-        decorated = register_task(self.callback)
-        callback = current_app.task(
-            decorated, filter=task_method, name="%s.chord_callback" % (self.name))
+        result = signature(self.callback.s(*args, **kwargs))  # start the chord
 
-        result = signature(callback.s())  # start the chord
-
-        return result.get()  # will return a single result
+        return result  # will return a single result
 
 
 def register_task(method):  # AKA: bolster.pipelines.task
@@ -216,6 +219,16 @@ def register_task(method):  # AKA: bolster.pipelines.task
     decorator.order = PIPELINES._task_ordering
     decorator.task_type = "task"
     PIPELINES._task_ordering += 1
+    return decorator
+
+
+def register_callback(method):
+    decorator = register_task(method)
+
+    del decorator.order
+    PIPELINES._task_ordering -= 1
+
+    decorator.task_type = "callback"
     return decorator
 
 

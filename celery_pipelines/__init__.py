@@ -1,10 +1,11 @@
 from celery_pipelines.models import (
-    PIPELINES, SynchronousPipeline, ParallelPipeline,
+    PIPELINES, SynchronousPipeline, ParallelPipeline, ChordPipeline,
     register_task as task,
-    register_subpipeline as subpipeline)
+    register_subpipeline as subpipeline,
+    register_callback as callback)
 
 __all__ = ['PIPELINES', 'SynchronousPipeline',
-           'ParallelPipeline', 'task', 'subpipeline']
+           'ParallelPipeline', 'ChordPipeline', 'task', 'subpipeline', 'callback']
 
 
 def autodiscover():
