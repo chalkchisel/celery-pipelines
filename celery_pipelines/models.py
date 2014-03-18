@@ -49,7 +49,7 @@ class PipelineBroker:
             is_callback = hasattr(method, "task_type") and method.task_type == "callback"
             if hasattr(method, "order") or is_callback:
                 task = current_app.task(
-                    method, filter=task_method, name="%s.%s" % (pipeline.name, name))
+                    method, filter=task_method, default_retry_delay=1, name="%s.%s" % (pipeline.name, name))
                 setattr(pipeline, name, task)
 
                 if is_callback:
